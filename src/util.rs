@@ -1,6 +1,10 @@
 use std::path::Path;
 
-pub fn finalize_paths(pk_opt: &Option<String>, sk_opt: &Option<String>, algorithm: &str) -> (String, String) {
+pub fn finalize_paths(
+    pk_opt: &Option<String>,
+    sk_opt: &Option<String>,
+    algorithm: &str,
+) -> (String, String) {
     let default_pk = format!("{}.pub", algorithm);
     let default_sk = format!("{}.sk", algorithm);
 
@@ -28,4 +32,3 @@ pub fn finalize_paths(pk_opt: &Option<String>, sk_opt: &Option<String>, algorith
 
     (pk_path, sk_path)
 }
-

@@ -1,8 +1,3 @@
-use pqcrypto_traits::kem::{PublicKey as KemPublicKey, SecretKey as KemSecretKey};
-use pqcrypto_traits::sign::{PublicKey as SignPublicKey, SecretKey as SignSecretKey};
-use pqcrypto::kem::mlkem512::keypair as mlkem512_keypair;
-use pqcrypto::kem::mlkem768::keypair as mlkem768_keypair;
-use pqcrypto::kem::mlkem1024::keypair as mlkem1024_keypair;
 use pqcrypto::kem::hqc128::keypair as hqc128_keypair;
 use pqcrypto::kem::hqc192::keypair as hqc192_keypair;
 use pqcrypto::kem::hqc256::keypair as hqc256_keypair;
@@ -16,6 +11,9 @@ use pqcrypto::kem::mceliece6960119::keypair as mceliece6960119_keypair;
 use pqcrypto::kem::mceliece6960119f::keypair as mceliece6960119f_keypair;
 use pqcrypto::kem::mceliece8192128::keypair as mceliece8192128_keypair;
 use pqcrypto::kem::mceliece8192128f::keypair as mceliece8192128f_keypair;
+use pqcrypto::kem::mlkem512::keypair as mlkem512_keypair;
+use pqcrypto::kem::mlkem768::keypair as mlkem768_keypair;
+use pqcrypto::kem::mlkem1024::keypair as mlkem1024_keypair;
 use pqcrypto::sign::falcon512::keypair as falcon512_keypair;
 use pqcrypto::sign::falcon1024::keypair as falcon1024_keypair;
 use pqcrypto::sign::falconpadded512::keypair as falconpadded512_keypair;
@@ -35,6 +33,8 @@ use pqcrypto::sign::sphincsshake192fsimple::keypair as sphincs_shake_192f_simple
 use pqcrypto::sign::sphincsshake192ssimple::keypair as sphincs_shake_192s_simple_keypair;
 use pqcrypto::sign::sphincsshake256fsimple::keypair as sphincs_shake_256f_simple_keypair;
 use pqcrypto::sign::sphincsshake256ssimple::keypair as sphincs_shake_256s_simple_keypair;
+use pqcrypto_traits::kem::{PublicKey as KemPublicKey, SecretKey as KemSecretKey};
+use pqcrypto_traits::sign::{PublicKey as SignPublicKey, SecretKey as SignSecretKey};
 
 pub fn generate_keys(algorithm: &str, variant: &str) -> (Vec<u8>, Vec<u8>) {
     match algorithm {
@@ -42,18 +42,30 @@ pub fn generate_keys(algorithm: &str, variant: &str) -> (Vec<u8>, Vec<u8>) {
             let (pk_bytes, sk_bytes) = match variant {
                 "512" => {
                     let (pk, sk) = mlkem512_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "768" => {
                     let (pk, sk) = mlkem768_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "1024" => {
                     let (pk, sk) = mlkem1024_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 _ => {
-                    eprintln!("'{}'은(는) ML-KEM 알고리즘에서 가능한 배리언트가 아닙니다!", variant);
+                    eprintln!(
+                        "'{}'은(는) ML-KEM 알고리즘에서 가능한 배리언트가 아닙니다!",
+                        variant
+                    );
                     std::process::exit(1);
                 }
             };
@@ -63,18 +75,30 @@ pub fn generate_keys(algorithm: &str, variant: &str) -> (Vec<u8>, Vec<u8>) {
             let (pk_bytes, sk_bytes) = match variant {
                 "128" => {
                     let (pk, sk) = hqc128_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "192" => {
                     let (pk, sk) = hqc192_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "256" => {
                     let (pk, sk) = hqc256_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 _ => {
-                    eprintln!("'{}'은(는) HQC 알고리즘에서 가능한 배리언트가 아닙니다!", variant);
+                    eprintln!(
+                        "'{}'은(는) HQC 알고리즘에서 가능한 배리언트가 아닙니다!",
+                        variant
+                    );
                     std::process::exit(1);
                 }
             };
@@ -84,46 +108,79 @@ pub fn generate_keys(algorithm: &str, variant: &str) -> (Vec<u8>, Vec<u8>) {
             let (pk_bytes, sk_bytes) = match variant {
                 "mceliece348864" => {
                     let (pk, sk) = mceliece348864_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "mceliece460896" => {
                     let (pk, sk) = mceliece460896_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "mceliece348864f" => {
                     let (pk, sk) = mceliece348864f_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "mceliece460896f" => {
                     let (pk, sk) = mceliece460896f_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "mceliece6688128" => {
                     let (pk, sk) = mceliece6688128_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "mceliece6960119" => {
                     let (pk, sk) = mceliece6960119_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "mceliece8192128" => {
                     let (pk, sk) = mceliece8192128_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "mceliece6688128f" => {
                     let (pk, sk) = mceliece6688128f_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "mceliece6960119f" => {
                     let (pk, sk) = mceliece6960119f_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "mceliece8192128f" => {
                     let (pk, sk) = mceliece8192128f_keypair();
-                    (KemPublicKey::as_bytes(&pk).to_vec(), KemSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        KemPublicKey::as_bytes(&pk).to_vec(),
+                        KemSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 _ => {
-                    eprintln!("'{}'은(는) McEliece 알고리즘에서 가능한 배리언트가 아닙니다!", variant);
+                    eprintln!(
+                        "'{}'은(는) McEliece 알고리즘에서 가능한 배리언트가 아닙니다!",
+                        variant
+                    );
                     std::process::exit(1);
                 }
             };
@@ -133,22 +190,37 @@ pub fn generate_keys(algorithm: &str, variant: &str) -> (Vec<u8>, Vec<u8>) {
             let (pk_bytes, sk_bytes) = match variant {
                 "nopad512" => {
                     let (pk, sk) = falcon512_keypair();
-                    (SignPublicKey::as_bytes(&pk).to_vec(), SignSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        SignPublicKey::as_bytes(&pk).to_vec(),
+                        SignSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "nopad1024" => {
                     let (pk, sk) = falcon1024_keypair();
-                    (SignPublicKey::as_bytes(&pk).to_vec(), SignSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        SignPublicKey::as_bytes(&pk).to_vec(),
+                        SignSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "padded512" => {
                     let (pk, sk) = falconpadded512_keypair();
-                    (SignPublicKey::as_bytes(&pk).to_vec(), SignSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        SignPublicKey::as_bytes(&pk).to_vec(),
+                        SignSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "padded1024" => {
                     let (pk, sk) = falconpadded1024_keypair();
-                    (SignPublicKey::as_bytes(&pk).to_vec(), SignSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        SignPublicKey::as_bytes(&pk).to_vec(),
+                        SignSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 _ => {
-                    eprintln!("'{}'은(는) FALCON 알고리즘에서 가능한 배리언트가 아닙니다!", variant);
+                    eprintln!(
+                        "'{}'은(는) FALCON 알고리즘에서 가능한 배리언트가 아닙니다!",
+                        variant
+                    );
                     std::process::exit(1);
                 }
             };
@@ -158,18 +230,30 @@ pub fn generate_keys(algorithm: &str, variant: &str) -> (Vec<u8>, Vec<u8>) {
             let (pk_bytes, sk_bytes) = match variant {
                 "44" => {
                     let (pk, sk) = mldsa44_keypair();
-                    (SignPublicKey::as_bytes(&pk).to_vec(), SignSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        SignPublicKey::as_bytes(&pk).to_vec(),
+                        SignSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "65" => {
                     let (pk, sk) = mldsa65_keypair();
-                    (SignPublicKey::as_bytes(&pk).to_vec(), SignSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        SignPublicKey::as_bytes(&pk).to_vec(),
+                        SignSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 "87" => {
                     let (pk, sk) = mldsa87_keypair();
-                    (SignPublicKey::as_bytes(&pk).to_vec(), SignSecretKey::as_bytes(&sk).to_vec())
+                    (
+                        SignPublicKey::as_bytes(&pk).to_vec(),
+                        SignSecretKey::as_bytes(&sk).to_vec(),
+                    )
                 }
                 _ => {
-                    eprintln!("'{}'은(는) ML-DSA 알고리즘에서 가능한 배리언트가 아닙니다!", variant);
+                    eprintln!(
+                        "'{}'은(는) ML-DSA 알고리즘에서 가능한 배리언트가 아닙니다!",
+                        variant
+                    );
                     std::process::exit(1);
                 }
             };
@@ -226,7 +310,10 @@ pub fn generate_keys(algorithm: &str, variant: &str) -> (Vec<u8>, Vec<u8>) {
                     (pk.as_bytes().to_vec(), sk.as_bytes().to_vec())
                 }
                 _ => {
-                    eprintln!("'{}'은(는) SPHINCS+ 알고리즘에서 가능한 배리언트가 아닙니다!", variant);
+                    eprintln!(
+                        "'{}'은(는) SPHINCS+ 알고리즘에서 가능한 배리언트가 아닙니다!",
+                        variant
+                    );
                     std::process::exit(1);
                 }
             };
@@ -250,4 +337,3 @@ pub fn minimal_variant_for_algorithm(algo: &str) -> &'static str {
         _ => "",
     }
 }
-
