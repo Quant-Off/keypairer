@@ -1,0 +1,21 @@
+{
+  "error.missing_alg": "Missing required argument: -alg <algorithm>",
+  "error.unknown_algorithm": "Unknown algorithm: {alg}",
+  "error.unknown_arg": "Unknown argument: {arg}",
+  "error.file.create_pk": "Error while creating public key file: {err}",
+  "error.file.write_pk": "Error while writing to public key file: {err}",
+  "error.file.create_sk": "Error while creating secret key file: {err}",
+  "error.file.write_sk": "Error while writing to secret key file: {err}",
+  "error.large_stack_create": "An error occurred while creating a large stack thread: {err}",
+  "error.large_stack_panic": "Unknown panic occurred in large-stack thread.",
+  "info.generated": "Generated key pair for '{alg}' (variant: {var}).",
+  "info.pk_saved": "Public key saved: {path}",
+  "info.sk_saved": "Secret key saved: {path}",
+  "info.pk_preview": "Public key (base64) preview:",
+  "usage": "Usage: {prog} -alg <algorithm> [-var | -variant <variant>] [-pkpath <public key path>] [-skpath <secret key path>] [-pkt | -pktext] [-skt | -sktext] [-l | -lang <i18n lang pack>]",
+  "usage.supported": "Supported algorithms: mlkem, hqc, mceliece, falcon, mldsa, sphincs+",
+  "usage.req": "- Algorithm is required. Variant defaults to the minimum per algorithm.",
+  "usage.paths": "- If paths are omitted, files are saved to the current directory as '<algorithm>.pub' / '<algorithm>.sk'. You may optionally specify extensions.",
+  "usage.text": "- Add [-pktext] or [-sktext] to save public/secret keys in a PEM-like text format.",
+  "usage.lang": "- Set output locale with [-lang]. Default is ko; en supported."
+}
