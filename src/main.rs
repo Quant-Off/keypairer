@@ -5,7 +5,7 @@ use std::thread;
 use zeroize::Zeroize;
 
 // 모듈 선언
-mod internals;
+use keypairer::internals;
 mod util;
 
 // 모듈 사용
