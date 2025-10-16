@@ -1,7 +1,6 @@
 // 표준 프렐류드
 use std::env;
 use std::process;
-use std::thread;
 use zeroize::Zeroize;
 
 // 모듈 선언
@@ -9,9 +8,8 @@ use keypairer::internals;
 mod util;
 
 // 모듈 사용
-use internals::i18n::load_translations;
-use internals::key_io::save_keys;
 use internals::keygen::{generate_keys, minimal_variant_for_algorithm};
+use keypairer::{load_translations, run_with_large_stack, save_keys};
 use util::finalize_paths;
 
 fn main() {
@@ -177,39 +175,6 @@ fn usage_and_exit(prog: &str, lang: &str) {
     process::exit(1);
 }
 
-fn run_with_large_stack<F, R>(f: F, lang: &str) -> R
-where
-    F: FnOnce() -> R + Send + 'static,
-    R: Send + 'static,
-{
-    let builder = thread::Builder::new().stack_size(64 * 1024 * 1024); // 64 MiB
-    let handle = builder.spawn(f).unwrap_or_else(|e| {
-        let tr = load_translations(lang);
-        let msg = tr
-            .get("error.large_stack_create")
-            .cloned()
-            .unwrap_or_else(|| {
-                "대용량 스택 스레드를 생성하는 도중 오류가 발생했습니다: {err}".to_string()
-            });
-        eprintln!("{}", msg.replace("{err}", &e.to_string()));
-        process::exit(1);
-    });
-
-    match handle.join() {
-        Ok(result) => result,
-        Err(_) => {
-            let tr = load_translations(lang);
-            let msg = tr
-                .get("error.large_stack_panic")
-                .cloned()
-                .unwrap_or_else(|| {
-                    "대용량 스택 스레드에서 알 수 없는 패닉이 발생했습니다.".to_string()
-                });
-            eprintln!("{}", msg);
-            process::exit(1);
-        }
-    }
-}
 
 fn print_help_variants() {
     // 구성 가능한 섹션 데이터
